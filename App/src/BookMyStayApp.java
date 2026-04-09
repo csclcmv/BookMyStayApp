@@ -101,19 +101,23 @@ class BookingQueue {
         queue = new LinkedList<>();
     }
 
+    // Add booking request
     public void addRequest(Reservation reservation) {
         queue.offer(reservation);
         System.out.println("Request added -> " + reservation);
     }
 
+    // View next request (without removing)
     public Reservation peekNext() {
         return queue.peek();
     }
 
+    // Remove next request (for future use case)
     public Reservation processNext() {
         return queue.poll();
     }
 
+    // Display all queued requests
     public void displayQueue() {
         if (queue.isEmpty()) {
             System.out.println("No pending booking requests.");
@@ -240,6 +244,7 @@ class SearchService {
         this.inventory = inventory;
     }
 
+    // Displays only rooms with availability > 0
     public void displayAvailableRooms(Room... rooms) {
         for (Room room : rooms) {
             String roomType = room.getClass().getSimpleName();
