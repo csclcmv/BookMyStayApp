@@ -159,6 +159,7 @@ class SearchService {
         this.inventory = inventory;
     }
 
+    // Displays only rooms with availability > 0
     public void displayAvailableRooms(Room... rooms) {
         for (Room room : rooms) {
             String roomType = room.getClass().getSimpleName();
