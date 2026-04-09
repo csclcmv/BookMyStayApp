@@ -1,5 +1,4 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*; // covers HashMap, Map, Queue, LinkedList
 
 public class BookMyStayApp {
 
@@ -23,7 +22,7 @@ public class BookMyStayApp {
         Room dbl = new DoubleRoom(2, 35, 80.0);
         Room suite = new SuiteRoom(3, 60, 150.0);
 
-        // Display all rooms (original behavior)
+        // Display all rooms
         System.out.println(single);
         System.out.println("Available: " + inventory.getAvailability("SingleRoom") + "\n");
 
@@ -43,7 +42,81 @@ public class BookMyStayApp {
         System.out.println("\nAvailable Rooms for Booking:");
         searchService.displayAvailableRooms(single, dbl, suite);
 
+        // ✅ Use Case 5: Booking Request Queue (FIFO)
+        BookingQueue bookingQueue = new BookingQueue();
+
+        System.out.println("\nSubmitting Booking Requests...");
+
+        bookingQueue.addRequest(new Reservation("Alice", "SingleRoom"));
+        bookingQueue.addRequest(new Reservation("Bob", "DoubleRoom"));
+        bookingQueue.addRequest(new Reservation("Charlie", "SuiteRoom"));
+        bookingQueue.addRequest(new Reservation("Diana", "SingleRoom"));
+
+        System.out.println("\nCurrent Booking Queue:");
+        bookingQueue.displayQueue();
+
         System.out.println("\nApplication terminating...");
+    }
+}
+
+// ✅ Reservation (Booking Request)
+class Reservation {
+    private String guestName;
+    private String roomType;
+
+    public Reservation(String guestName, String roomType) {
+        this.guestName = guestName;
+        this.roomType = roomType;
+    }
+
+    public String getGuestName() {
+        return guestName;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
+    @Override
+    public String toString() {
+        return "Guest: " + guestName + ", Requested Room: " + roomType;
+    }
+}
+
+// ✅ FIFO Booking Queue
+class BookingQueue {
+    private Queue<Reservation> queue;
+
+    public BookingQueue() {
+        queue = new LinkedList<>();
+    }
+
+    // Add booking request
+    public void addRequest(Reservation reservation) {
+        queue.offer(reservation);
+        System.out.println("Request added -> " + reservation);
+    }
+
+    // View next request (without removing)
+    public Reservation peekNext() {
+        return queue.peek();
+    }
+
+    // Remove next request (for future use case)
+    public Reservation processNext() {
+        return queue.poll();
+    }
+
+    // Display all queued requests
+    public void displayQueue() {
+        if (queue.isEmpty()) {
+            System.out.println("No pending booking requests.");
+            return;
+        }
+
+        for (Reservation r : queue) {
+            System.out.println(r);
+        }
     }
 }
 
